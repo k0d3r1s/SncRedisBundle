@@ -21,12 +21,12 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
-        "symfony/deprecation-contracts": "^2 || ^3",
-        "symfony/framework-bundle": "^5.4.20 ||^6.0 || ^7.0",
-        "symfony/http-foundation": "^5.4.20 ||^6.0 || ^7.0",
+        "php": ">=7.4",
+        "symfony/deprecation-contracts": "*",
+        "symfony/framework-bundle": "*",
+        "symfony/http-foundation": "*",
         "symfony/service-contracts": ">=1.0",
-        "symfony/var-dumper": "^5.4.20 ||^6.0 || ^7.0"
+        "symfony/var-dumper": "*"
     },
     "require-dev": {
         "ext-pdo_sqlite": "*",
