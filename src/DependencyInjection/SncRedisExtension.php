@@ -16,6 +16,7 @@ namespace Snc\RedisBundle\DependencyInjection;
 use InvalidArgumentException;
 use LogicException;
 use RedisSentinel;
+use Relay\Sentinel;
 use Snc\RedisBundle\DependencyInjection\Configuration\Configuration;
 use Snc\RedisBundle\DependencyInjection\Configuration\RedisDsn;
 use Snc\RedisBundle\DependencyInjection\Configuration\RedisEnvDsn;
@@ -26,9 +27,9 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 use function array_map;
 use function assert;
@@ -222,9 +223,10 @@ class SncRedisExtension extends Extension
         );
 
         unset($options['options']['commands']);
+        $sentinelClass = $options['type'] === 'relay' ? Sentinel::class : RedisSentinel::class;
 
         $phpredisDef = new Definition($phpredisClientClass, [
-            $hasSentinelOption ? RedisSentinel::class : $phpredisClientClass,
+            $hasSentinelOption ? $sentinelClass : $phpredisClientClass,
             array_map('strval', $options['dsns']),
             $options['options'],
             $options['alias'],

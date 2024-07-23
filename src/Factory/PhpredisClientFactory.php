@@ -25,6 +25,7 @@ use function array_key_exists;
 use function array_keys;
 use function array_map;
 use function array_values;
+use function class_exists;
 use function count;
 use function get_class;
 use function implode;
@@ -36,6 +37,9 @@ use function spl_autoload_register;
 use function sprintf;
 use function var_export;
 use function version_compare;
+
+// Help opcache.preload discover always-needed symbols
+class_exists(RedisDsn::class);
 
 /** @internal */
 class PhpredisClientFactory
@@ -255,15 +259,15 @@ class PhpredisClientFactory
         }
 
         if (isset($options['prefix'])) {
-            $client->setOption(Redis::OPT_PREFIX, $options['prefix']);
+            $client->setOption($class::OPT_PREFIX, $options['prefix']);
         }
 
         if (isset($options['read_write_timeout'])) {
-            $client->setOption(Redis::OPT_READ_TIMEOUT, (float) $options['read_write_timeout']);
+            $client->setOption($class::OPT_READ_TIMEOUT, (float) $options['read_write_timeout']);
         }
 
         if (isset($options['serialization'])) {
-            $client->setOption(Redis::OPT_SERIALIZER, $this->loadSerializationType($options['serialization']));
+            $client->setOption($class::OPT_SERIALIZER, $this->loadSerializationType($options['serialization']));
         }
 
         return $client;
